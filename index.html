@@ -173,6 +173,9 @@
 		request.send(data);
 		request.addEventListener("load", function(){
 			let receivedResponse = JSON.parse(request.response);
+			if (receivedResponse.length > 1) {
+				alert(receivedResponse);
+			}
 			Y = parseInt(Y);	
 			X = parseInt(X);			
 			if(Y === 0){

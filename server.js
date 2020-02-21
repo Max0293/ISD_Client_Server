@@ -31,8 +31,13 @@ app.post('/submit', jsonParser, function (request, response) {
    const y = parseInt(request.body.Y);
    const x = parseInt(request.body.X);
    const sessionId = request.body.sessionId;
-   const resp = seaBattle(y)(x);
-
+   let resp;
+   try {
+      resp = seaBattle(y)(x);
+   } catch (err) {
+      console.log('Error in server ' + err.message);
+      response.json(err.message);
+   }
    (async function () {
       const db = new SeaBattleDb();
       await db.init();
