@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/Max0293/ISD_Client_Server.git"
   },
-    "devDependencies": {
+  "devDependencies": {
     "eslint": "^6.7.2",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-import": "^2.18.2",

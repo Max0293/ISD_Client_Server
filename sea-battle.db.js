@@ -24,10 +24,24 @@ function SeaBattleDB () {
       return (await this.connection.collection('shots').find(null)).toArray();
    };
 
+   this.readUsers = async () => {
+      return (await this.connection.collection('users').find(null)).toArray();
+   }
+
    this.clear = async () => {
       const res = await this.connection.collection('shots').deleteMany(null);
       return res;
    };
+
+   this.newUser = async (userName, userArray) => {
+      const res = await this.connection.collection('users').insertOne({userName: userName, userArray: userArray});
+      return res;
+   };
+
+   this.update = async (userName, userArray) => {
+      const res = await this.connection.collection('users').update({userName: userName}, {$set: {userArray: userArray}}, {upserts: false});
+      return res;
+   }
 
    this.close = () => {
       this.client.close();

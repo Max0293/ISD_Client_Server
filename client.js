@@ -1,12 +1,11 @@
-module.exports.createSeaBattle = createSeaBattle;
+module.exports = createSeaBattle;
 
-function createSeaBattle () {
+function createSeaBattle (battleField) {
    const missFire = -1;
    const hitFire = 0;
    const deathHit = 1;
    const usedCells = [];
-   const battleField = createShips(createBattleField(10, 10));
-
+   
    return (x) => {
       return (y) => {
          validate(x, y, usedCells);
@@ -16,44 +15,16 @@ function createSeaBattle () {
             battleField[x][y] = false;
             usedCells.push([x, y]);
             if (isShipDestroyed(battleField, x, y)) {
-               return deathHit;
+               return {result: deathHit, resultArray: battleField};
             }
-            return hitFire;
+            return {result: hitFire, resultArray: battleField};
          } else if (battleField[x][y] === null) {
             battleField[x][y] = missFire;
             usedCells.push([x, y]);
-            return missFire;
+            return {result: missFire, resultArray: battleField};
          }
       };
    };
-}
-
-function createShips (array) {
-   for (let i = 0; i < 4; i++) {
-      array[0][i] = true;
-   }
-   for (let i = 0; i < 7; i++) {
-      if (i < 3) {
-         array[2][i] = true;
-      } else if (i > 3) {
-         array[2][i] = true;
-      }
-   }
-   for (let i = 0; i < 8; i++) {
-      if (i < 2) {
-         array[4][i] = true;
-      } else if (i > 2 && i < 5) {
-         array[4][i] = true;
-      } else if (i > 5 && i < 8) {
-         array[4][i] = true;
-      }
-   }
-   for (let i = 0; i <= 6; i++) {
-      if (i % 2) {
-         array[6][i] = true;
-      }
-   }
-   return array;
 }
 
 function checkEndGame (array) {
@@ -65,17 +36,6 @@ function checkEndGame (array) {
       }
    }
    return true;
-}
-
-function createBattleField (rows, columns) {
-   const battleField = [];
-   for (let i = 0; i < rows; i++) {
-      battleField[i] = [];
-      for (let j = 0; j < columns; j++) {
-         battleField[i][j] = null;
-      }
-   }
-   return battleField;
 }
 
 function isShipDestroyed (array, y, x) {

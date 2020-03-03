@@ -157,8 +157,35 @@
 	<button type="submit" id="submit">Send</button>
 	<button type="submit" id="delete">Delete All</button>
 	<button type="submit" id="view">View Shots</button>
+	<button type="submit" id="toHome">Home page</button>
 </form>
-
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		let name = localStorage.getItem('Name');
+		fetch ('/drow', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({Name: name})
+        }).then(response => response.json()).then(response => {
+		    if (response){
+				let count = 0;
+		  		for (let x of response) {
+			    	for (let y of x) {
+				   		if (y === false) {
+							  document.getElementById(`${count}`).style.backgroundColor = 'green';
+							  count++;
+			        	} else if (y === -1) {
+							document.getElementById(`${count}`).style.backgroundColor = 'red';
+							count++;
+						} else {count++;}
+			    	}
+				}
+			}
+        });
+	})
+</script>
 <script>
 	const sessionId = (new Date()).toISOString();
 
@@ -166,7 +193,11 @@
 		let idElement;
 		let Y = document.getElementById("Y").value;
 		let X = document.getElementById("X").value;
-		let data = JSON.stringify({Y: Y, X: X, sessionId: sessionId});
+		/* let cookies = document.cookie.split(';');
+		cookies = cookies[0].split('=');
+		let userName = cookies[1]; */
+		let userName = localStorage.getItem('Name');
+		let data = JSON.stringify({Y: Y, X: X, sessionId: sessionId, userName: userName});
 		let request = new XMLHttpRequest();
 		request.open("POST", "/submit", true);
 		request.setRequestHeader("Content-Type", "application/json");
@@ -216,6 +247,10 @@
 		e.preventDefault();
 	});
 
+	document.getElementById('toHome').addEventListener('click', function(e){
+		location = '/';
+		e.preventDefault();
+	})
 </script>
 </body>
 </html>
