@@ -7,11 +7,11 @@ const app = express();
 const createSeaBattle = require('./client');
 const create = require('./battleFieldCreator');
 const SeaBattleDb = require('./sea-battle.db').gameModel;
-
 let seaBattle = null;
 
+app.use('/public', express.static('public'));
+
 app.get('/', function (request, response) {
-  // seaBattle = createSeaBattle.createSeaBattle(create());
    response.sendFile(fullPath);
 });
 
@@ -21,7 +21,6 @@ app.get('/shots', function (request, response) {
       await db.init();
       const shots = await db.read();
       db.close();
-
       await response.json(shots);
    })();
 });
@@ -48,8 +47,6 @@ app.post('/submit', jsonParser, function (request, response) {
       await db.update(userName, resp.resultArray);
       db.close();
    })();
-   
-   //console.log(resp.resultArray);
    response.json(resp.result);
 });
 
@@ -65,16 +62,14 @@ app.delete('/delete', function (request, response) {
 app.post('/authorize', jsonParser, function (request, response) {
    if (!request.body) {
       return response.status(400);
-   }
-   //const CurrentUserName = request.body.Name;       //ПОЛУЧАЕМ ИМЯ
-   
+   }   
    (async function () {
       let find = false;
       const db = new SeaBattleDb();
       await db.init();
       const users = await db.readUsers();
       for (i in users) {
-         if (users[i].userName === request.body.Name){
+         if (users[i].userName === request.body.Name && users[i].userArray !== null){
             find = true;
          }     
       }

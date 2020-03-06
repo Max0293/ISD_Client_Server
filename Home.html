@@ -1,70 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8" />
+    <meta charset="utf-8" />  
+    <link rel="stylesheet" type="text/css" href="public/styles.css">
+    
 </head>
 <body>
     <h1>Greetings</h1>
-    <div>Please entrer your name</div>
+    <div>Please entre your name</div>
     <label>Your name: </label>
-    <input id="userName" placeholder="Enter your name">
-    <button type="submit" id="okBtn">Enter data</button>
+    <input id="userName" placeholder="Enter your name" required>
+    <button type="submit" id="okBtn">Enter data</button><br>
+    <br>    
     <button disabled type="submit" id="newGame">New game</button>
     <button disabled type="submit" id="continueGame">Continue</button>
+
+    <script src="/public/homeScript.js"></script>
 </body>
-<script>
-    document.getElementById('okBtn').addEventListener('click', function(e){
-        let name = document.getElementById('userName').value;
-        fetch('/authorize', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({Name: name})
-            })
-            .then(response => response.json())
-            .then(answer => {
-                if (answer === true) {
-                    document.getElementById('newGame').removeAttribute('disabled');
-                    document.getElementById('continueGame').removeAttribute('disabled');
-                } else {
-                    document.getElementById('newGame').removeAttribute('disabled');
-                }
-            })            
-        e.preventDefault();
-    });
-
-    document.getElementById('newGame').addEventListener('click', function(e){
-        let name = document.getElementById('userName').value;
-        localStorage.setItem('Name', `${name}`);
-        fetch('/newGame', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({Name: name})
-        }).then(response => response.json()).then(response => {            
-         /*    let expire = new Date();
-            expire.setHours(expire.getMinutes + 5);
-            document.cookie = `login=${name};expires=` + expire.toUTCString()+`;path=/index;`; */
-            location = response;
-        });
-        e.preventDefault();
-    });
-
-    document.getElementById('continueGame').addEventListener('click', function (e) {
-        let name = document.getElementById('userName').value;
-        localStorage.setItem('Name', `${name}`);
-        fetch ('/continueGame', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({Name: name})
-        }).then(response => response.json()).then(response => {
-            location = response;
-        });
-        e.preventDefault();
-    });
-</script>
 </html>

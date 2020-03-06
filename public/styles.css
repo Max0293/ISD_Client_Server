@@ -1,0 +1,14 @@
+.row div{
+	display: inline-block;
+}
+
+.cell {
+	border: 1px solid;
+	width: 35px;
+	height: 35px;
+}
+
+.inpNum{
+	width: 30px;
+	height: 20px;
+}

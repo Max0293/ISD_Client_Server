@@ -16,7 +16,8 @@ function SeaBattleDB () {
    };
 
    this.shoot = async (x, y, sessionId) => {
-      const res = await this.connection.collection('shots').insertOne({ x: x, y: y, sessionTime: sessionId });
+      const res = await this.connection.collection('shots')
+      .insertOne({ x: x, y: y, sessionTime: sessionId });
       return res;
    };
 
@@ -34,12 +35,14 @@ function SeaBattleDB () {
    };
 
    this.newUser = async (userName, userArray) => {
-      const res = await this.connection.collection('users').insertOne({userName: userName, userArray: userArray});
+      const res = await this.connection.collection('users')
+      .insertOne({userName: userName, userArray: userArray});
       return res;
    };
 
    this.update = async (userName, userArray) => {
-      const res = await this.connection.collection('users').update({userName: userName}, {$set: {userArray: userArray}}, {upserts: false});
+      const res = await this.connection.collection('users')
+      .update({userName: userName}, {$set: {userArray: userArray}}, {upserts: false});
       return res;
    }
 
